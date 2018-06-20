@@ -25,7 +25,8 @@
         $("#btn-ajax").click(function(){
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
-			$.get("demo_json.php?" + myJSON, function(data,status) {
+			//$.get("demo_json.php?" + myJSON, function(data,status) {
+			$.get("http://localhost:8080/?" + myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
 				$("#ret").html("Nome: " + myObj.name 
 						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
