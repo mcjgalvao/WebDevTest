@@ -22,11 +22,40 @@
         $("p").click(function(){
             $(this).hide();
         });
-        $("#btn-ajax").click(function(){
+        $("#btn-ajax-get-php").click(function(){
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
-			//$.get("demo_json.php?" + myJSON, function(data,status) {
-			$.get("http://localhost:8080/?" + myJSON, function(data,status) {
+			$.get("demo_json.php?" + myJSON, function(data,status) {
+				var myObj = JSON.parse(data);
+				$("#ret").html("Nome: " + myObj.name 
+						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
+						+ myObj.city);
+			});
+        });
+        $("#btn-ajax-post-php").click(function(){
+            var myObj = { "name":"John", "age":33, "city":"NewYork" };
+            var myJSON = JSON.stringify(myObj);
+			$.post("demo_json.php", myJSON, function(data,status) {
+				var myObj = JSON.parse(data);
+				$("#ret").html("Nome: " + myObj.name 
+						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
+						+ myObj.city);
+			});
+        });
+        $("#btn-ajax-get-nodejs").click(function(){
+            var myObj = { "name":"John", "age":32, "city":"NewYork" };
+            var myJSON = JSON.stringify(myObj);
+			$.get("http://localhost:8080/a?" + myJSON, function(data,status) {
+				var myObj = JSON.parse(data);
+				$("#ret").html("Nome: " + myObj.name 
+						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
+						+ myObj.city);
+			});
+        });
+        $("#btn-ajax-post-nodejs").click(function(){
+            var myObj = { "name":"John", "age":33, "city":"NewYork" };
+            var myJSON = JSON.stringify(myObj);
+			$.post("http://localhost:8080/", myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
 				$("#ret").html("Nome: " + myObj.name 
 						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
@@ -67,7 +96,10 @@
     <div id="teste">
     </div>
 
-    <button id="btn-ajax" type="button">Call AJAX JSON</button>
+    <button id="btn-ajax-get-php" type="button">Call AJAX JSON GET PHP</button><br>
+    <button id="btn-ajax-post-php" type="button">Call AJAX JSON POST PHP</button><br>
+    <button id="btn-ajax-get-nodejs" type="button">Call AJAX JSON GET NodeJS</button><br>
+    <button id="btn-ajax-post-nodejs" type="button">Call AJAX JSON NodeJS</button><br>
     
     <div id="ret"></div>
     <?php     
