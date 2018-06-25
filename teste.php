@@ -10,7 +10,7 @@
 	<script src="./script/vue.js"></script>
 	<script src="./script/bootstrap.js"></script>
     <script>
-    var host = "localhost"; //"192.168.0.52"; 
+    var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
@@ -81,8 +81,9 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-12">
-				<p>Testing 
+			<div class="col-sm-12 jumbotron">
+				<p>
+				<h1>Testing 
         		<span id="app1" class="vue-js">
             		{{ msg }}
         		</span>
@@ -92,27 +93,38 @@
     		      echo("PHP !!!");
     	        ?>
         		</span>
+				</h1>
+        		<div id="app" class="vue-js">
+            		<p>{{ message }}</p>
+        		</div>
         		<p>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-12">
-        		<div id="app" class="vue-js">
-            		<p>{{ message }}</p>
-        		</div>
+				<div id="btnMsg" class="alert alert-success alert-dismissible fade">
+    				<button type="button" class="close" data-dismiss="alert">&times;</button>
+    				<strong>Success!</strong> This alert box could indicate a successful or positive action.
+  				</div>
 			</div>
-		</div>
+		</div>		  
 		<div class="row">
 			<div class="col-sm-2">
-        		<button type="button" onclick='document.getElementById("teste").innerHTML = "&lt;p&gt;Hello JavaScript!&lt;/p&gt;"'>Click Me!</button>
+        		<button type="button" class="btn btn-outline-primary btn-lg" 
+					onclick='document.getElementById("teste").innerHTML = "&lt;p&gt;Hello JavaScript!&lt;/p&gt;"; $("#btnMsg").addClass("show");'>Click Me!</button>
 		        <div id="teste">
         		</div>
         	</div>
 			<div class="col-sm-4">
-                <button id="btn-ajax-get-php" type="button">Call AJAX JSON GET PHP</button><br>
-                <button id="btn-ajax-post-php" type="button">Call AJAX JSON POST PHP</button><br>
-                <button id="btn-ajax-get-nodejs" type="button">Call AJAX JSON GET NodeJS</button><br>
-                <button id="btn-ajax-post-nodejs" type="button">Call AJAX JSON NodeJS</button><br>
+                <div class="btn-group-vertical btn-block">
+					<button id="btn-ajax-get-php" class="btn btn-primary btn-block" type="button">Call AJAX JSON GET PHP</button>
+                	<button id="btn-ajax-post-php" class="btn btn-secondary btn-block" type="button">Call AJAX JSON POST PHP</button>
+                </div>
+				<p></p>
+                <div class="btn-group-vertical btn-block">
+					<button id="btn-ajax-get-nodejs" class="btn btn-primary btn-block" type="button">Call AJAX JSON GET NodeJS</button>
+    	            <button id="btn-ajax-post-nodejs" class="btn btn-secondary btn-block" type="button">Call AJAX JSON NodeJS</button>
+				</div>
 			</div>
 			<div class="col-sm-6">
 		        <div id="ret"></div>
