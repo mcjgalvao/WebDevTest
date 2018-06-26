@@ -32,9 +32,9 @@
             var myJSON = JSON.stringify(myObj);
 			$.get("demo_json.php?" + myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
-				$("#ret").html("<p>Nome: " + myObj.name 
-						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
-						+ myObj.city);
+				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
 			});
         });
         $("#btn-ajax-post-php").click(function(){
@@ -42,9 +42,9 @@
             var myJSON = JSON.stringify(myObj);
 			$.post("demo_json.php", myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
-				$("#ret").html("<p>Nome: " + myObj.name 
-						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
-						+ myObj.city);
+				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
 			});
         });
         $("#btn-ajax-get-nodejs").click(function(){
@@ -52,9 +52,9 @@
             var myJSON = JSON.stringify(myObj);
 			$.get("http://" + host + ":8080/a?" + myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
-				$("#ret").html("<p>Nome: " + myObj.name 
-						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
-						+ myObj.city);
+				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
 			});
         });
         $("#btn-ajax-post-nodejs").click(function(){
@@ -62,12 +62,23 @@
             var myJSON = JSON.stringify(myObj);
 			$.post("http://" + host + ":8080/", myJSON, function(data,status) {
 				var myObj = JSON.parse(data);
-				$("#ret").html("<p>Nome: " + myObj.name 
-						+ "<p>Idade: " + myObj.age + "<p>Cidade: "
-						+ myObj.city);
+				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
 			});
         });
+        $("#clickButton").click(function() {
+			$("#teste").html("<p>Hello JavaScript!</p>");
+			showMsg("Comando enviado com sucesso");               
+        });
     });
+    function showMsg(msg) {
+    	$("#rowMsg").html(
+				"<div class=\"alert alert-success alert-dismissible fade show\"> \
+    				<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>  \
+    				<strong>Success!</strong> " + msg + " \
+  				</div>");
+    };
     </script>
 	<style>
 	.vue-js {
@@ -101,19 +112,15 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-12">
-				<div id="btnMsg" class="alert alert-success alert-dismissible fade">
-    				<button type="button" class="close" data-dismiss="alert">&times;</button>
-    				<strong>Success!</strong> This alert box could indicate a successful or positive action.
-  				</div>
+			<div id="rowMsg" class="col-sm-12">
 			</div>
 		</div>		  
 		<div class="row">
 			<div class="col-sm-2">
-        		<button type="button" class="btn btn-outline-primary btn-lg" 
-					onclick='document.getElementById("teste").innerHTML = "&lt;p&gt;Hello JavaScript!&lt;/p&gt;"; $("#btnMsg").addClass("show");'>Click Me!</button>
+        		<button id="clickButton" type="button" class="btn btn-primary btn-lg btn-block">Click Me!</button>
 		        <div id="teste">
         		</div>
+        		<p></p>
         	</div>
 			<div class="col-sm-4">
                 <div class="btn-group-vertical btn-block">
