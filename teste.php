@@ -11,18 +11,27 @@
 	<script src="./script/bootstrap.js"></script>
     <script>
     var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
+    var vm;
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
   		  data: {
   		    message: 'Hello Vue.js by Marcelo!'
   		  }
-  	  		});
+  	  	});
   		new Vue({
   		  el: '#app1',
   		  data: {
   		    msg: 'Vue.js'
   		  }
+  		});
+    	vm = new Vue({
+    		  el: '#app2',
+    		  data: {
+    		    msg1: 'Mensagem 1',
+    	  		msg2: 'Mensagem 2',
+    	  		msg3: 'badge badge-warning'   
+    		  }
   		});
         $("p").click(function(){
             $(this).hide();
@@ -91,6 +100,12 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<div class="row">
+			<div id="app2" class="col-sm-12">
+				<b>{{ msg1 }}</b> ou <i>{{ msg2 }}</i>
+				<span v-bind:class="msg3">Teste de Atributo</span>
+			</div>
+		</div>	
 		<div class="row">
 			<div class="col-sm-12 jumbotron">
 				<p>
