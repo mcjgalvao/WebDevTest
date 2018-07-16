@@ -10,7 +10,7 @@
 	<script src="./script/vue.js"></script>
 	<script src="./script/bootstrap.js"></script>
     <script>
-    var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
+    var host = "192.168.0.52";//"127.0.0.1";//"localhost"; //"192.168.0.52"; 
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
@@ -98,7 +98,7 @@
         		<span id="app1" class="vue-js">
             		{{ msg }}
         		</span>
-        		and
+        		and 
         		<span class="php">
         		<?php
     		      echo("PHP !!!");
