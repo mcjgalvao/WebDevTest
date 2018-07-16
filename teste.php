@@ -40,40 +40,28 @@
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.get("demo_json.php?" + myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-post-php").click(function(){
             var myObj = { "name":"John", "age":33, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.post("demo_json.php", myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-get-nodejs").click(function(){
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.get("http://" + host + ":8080/a?" + myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-post-nodejs").click(function(){
             var myObj = { "name":"John", "age":33, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.post("http://" + host + ":8080/", myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#clickButton").click(function() {
@@ -87,6 +75,12 @@
     				<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>  \
     				<strong>Success!</strong> " + msg + " \
   				</div>");
+    };
+    function showRet(data) {
+		var myObj = JSON.parse(data);
+		$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+				+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+				+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
     };
     </script>
 	<style>
