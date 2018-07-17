@@ -10,10 +10,10 @@
         default:
     }
     header('Content-Type: text/html'); // application/json
-    header('Access-Control-Allow-Origin : *');
-    header('Cache-Control : no-cache, no-store, must-revalidate');
-    header('Pragma : no-cache');
-    header('Expires : 0');
+    header('Access-Control-Allow-Origin: *');
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
     $obj = json_decode(urldecode($jsonData));
     //echo("obj:");
     //print_r($obj);

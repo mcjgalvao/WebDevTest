@@ -11,18 +11,27 @@
 	<script src="./script/bootstrap.js"></script>
     <script>
     var host = "192.168.0.52";//"127.0.0.1";//"localhost"; //"192.168.0.52"; 
+    var vm;
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
   		  data: {
   		    message: 'Hello Vue.js by Marcelo!'
   		  }
-  	  		});
+  	  	});
   		new Vue({
   		  el: '#app1',
   		  data: {
   		    msg: 'Vue.js'
   		  }
+  		});
+    	vm = new Vue({
+    		  el: '#app2',
+    		  data: {
+    		    msg1: 'Mensagem 1',
+    	  		msg2: 'Mensagem 2',
+    	  		msg3: 'badge badge-warning'   
+    		  }
   		});
         $("p").click(function(){
             $(this).hide();
@@ -31,40 +40,28 @@
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.get("demo_json.php?" + myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-post-php").click(function(){
             var myObj = { "name":"John", "age":33, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.post("demo_json.php", myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-get-nodejs").click(function(){
             var myObj = { "name":"John", "age":32, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.get("http://" + host + ":8080/a?" + myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#btn-ajax-post-nodejs").click(function(){
             var myObj = { "name":"John", "age":33, "city":"NewYork" };
             var myJSON = JSON.stringify(myObj);
 			$.post("http://" + host + ":8080/", myJSON, function(data,status) {
-				var myObj = JSON.parse(data);
-				$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
-						+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
-						+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+				showRet(data);
 			});
         });
         $("#clickButton").click(function() {
@@ -79,6 +76,12 @@
     				<strong>Success!</strong> " + msg + " \
   				</div>");
     };
+    function showRet(data) {
+		var myObj = JSON.parse(data);
+		$("#ret").html("<p><span class='badge badge-primary'>Nome</span> " + myObj.name 
+				+ "<p><span class='badge badge-primary'>Idade</span> " + myObj.age 
+				+ "<p><span class='badge badge-primary'>Cidade</span> " + myObj.city);
+    };
     </script>
 	<style>
 	.vue-js {
@@ -91,6 +94,12 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<div class="row">
+			<div id="app2" class="col-sm-12">
+				<b>{{ msg1 }}</b> ou <i>{{ msg2 }}</i>
+				<span v-bind:class="msg3">Teste de Atributo</span>
+			</div>
+		</div>	
 		<div class="row">
 			<div class="col-sm-12 jumbotron">
 				<p>
