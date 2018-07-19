@@ -16,6 +16,7 @@
     var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
     var vm;
     var g;
+    var selectedKey = 1;
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
@@ -23,9 +24,13 @@
   		    message: 'Hello Vue.js by Marcelo!'
   		  }
   	  	});
-        $("#clickButton").click(function() {
-			$("#teste").html("<p>Hello JavaScript!</p>");
-			showMsg("Gr&aacute;fico atualizado");               
+        $(".graph-link").click(function() {
+            console.log("ID: " + $(this).attr("id"));
+            selectedKey = $(this).attr("id");
+            $(".graph-link").removeClass("active");
+            $(this).addClass("active");
+            updateGraph();
+			//showMsg("Gr&aacute;fico atualizado");               
         });
         g = new Dygraph(
                 
@@ -49,15 +54,26 @@
                         echo("\"".$row['t'].",".$row['v']."\\n\" + \n");
                     }
                     echo("\"\\n\"\n");
-                    ?>
-				, { drawPoints:true, pointSize:3 }
+                ?>
+				, { drawPoints:true, pointSize:3, xRangePad:10, includeZero:true }
         );
-        window.intervalId = setInterval(function() {
+        
+		// Preenche myHostname com mesmo host recebido nesta requisição
+		//console.log("URL: " + document.URL);
+		var parser = document.createElement('a');
+		parser.href = document.URL;
+		//console.log("hostname: " + parser.hostname);
+		var myHostname = parser.hostname;
+
+		function updateGraph() {
+			if(selectedKey<0)
+				return;
             // Use AJAX to get points
-            var myObj = { "key":"1" };
+            var myObj = { "key": selectedKey };
             var myJSON = JSON.stringify(myObj);
-			$.post("http://" + host + ":8080/getData", myJSON, function(data,status) {
-				//console.log("data: " + data);
+            var updateURL = "http://" + myHostname + ":8080/getData";
+			console.log("updateURL: " + updateURL);
+			$.post(updateURL, myJSON, function(data,status) {
 				// parse JSON return
 				var retObj = JSON.parse(data);
 				//console.log("retObj: " + retObj);
@@ -67,10 +83,16 @@
     				//console.log("dataPoint[" + i + "] : " + dataPoint.t + "," + dataPoint.d);
     				graphData.push([new Date(dataPoint.t),dataPoint.d]);
     			}
-	            g.updateOptions( { 'file': graphData } );
+	            g.updateOptions(
+	    	       { 
+		    	    'file': graphData 
+//		    	    ,dateWindow: [Date.now() - 30 * 1000, Date.now() 
+			       }
+				);
 			});
-            
-        }, 10000);
+		}			
+		
+        window.intervalId = setInterval(updateGraph, 10000);
     });
     function showMsg(msg) {
     	$("#rowMsg").html(
@@ -113,10 +135,27 @@
 		</div>		  
 		<div class="row">
 			<div class="col-sm-2">
-        		<button id="clickButton" type="button" class="btn btn-primary btn-lg btn-block">Update</button>
-		        <div id="teste">
-        		</div>
-        		<p></p>
+                <ul class="list-group">
+     <!--              <a href="#" class="list-group-item list-group-item-action">Third item</a> -->
+				<?php 
+                    $mysqli = new mysqli("localhost", "root", "manager", "iotdb");
+                    if ($mysqli->connect_errno) {
+                        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+                    }
+                    
+                    $res = $mysqli->query(
+                        "SELECT T01_NAME AS n, T01_KEY AS k FROM T01_VARIABLES"
+                        );
+                    $res->data_seek(0);
+                    while ($row = $res->fetch_assoc()) {
+                        if($row['k']==1)
+                            echo("<a id=\"".$row['k']."\" class=\"list-group-item list-group-item-action graph-link active\">".$row['n']."</a>");
+                        else
+                            echo("<a id=\"".$row['k']."\" class=\"list-group-item list-group-item-action graph-link\">".$row['n']."</a>");
+                    }
+                ?>
+                </ul>
+                <p></p>
         	</div>
 			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:25px;">
 				<p></p>
