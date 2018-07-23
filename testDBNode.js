@@ -17,18 +17,18 @@ con.connect(function(err) {
 function saveData(obj, callback) {
   // Recupera ID da variavel a partir do Key
   var sql1 = "SELECT T01_ID AS id FROM T01_VARIABLES WHERE T01_KEY = " + obj.key;
-  console.log('sql1: ' + sql1);
+  //console.log('sql1: ' + sql1);
   con.query(sql1, function (err, result, fields) {
     if (err) throw err;
     if(result.length==1) {
     	obj.variableId = result[0].id;
-    	console.log("ID "+ obj.variableId + " retreived from KEY " + result[0].id);
+    	//console.log("ID "+ obj.variableId + " retreived from KEY " + result[0].id);
 
 	    var sql2 = "INSERT INTO T02_DATA (T02_T01_VARIABLE, T02_DATA) VALUES(" + obj.variableId + ", " + obj.value + ")";
-		console.log('sql2: ' + sql2);
+		//console.log('sql2: ' + sql2);
 		con.query(sql2, function (err, result) {
 		  if (err) throw err;
-		  console.log("Success: " + result.affectedRows + " record(s) inserted");
+		  console.log("Success: 1 record inserted");
 		  callback();
 		});
 
@@ -44,18 +44,18 @@ function saveData(obj, callback) {
 function getData(obj, callback) {
 	  // Recupera ID da variavel a partir do Key
 	  var sql1 = "SELECT T01_ID AS id FROM T01_VARIABLES WHERE T01_KEY = " + obj.key;
-	  console.log('sql1: ' + sql1);
+	  //console.log('sql1: ' + sql1);
 	  con.query(sql1, function (err, result, fields) {
 	    if (err) throw err;
 	    if(result.length==1) {
 	    	obj.variableId = result[0].id;
-	    	console.log("ID "+ obj.variableId + " retreived from KEY " + result[0].id);
+	    	//console.log("ID "+ obj.variableId + " retreived from KEY " + result[0].id);
 
 		    var sql2 = "SELECT DATE_FORMAT(T02_TIMESTAMP,'%Y-%m-%d %H:%i:%S') AS t, T02_DATA AS d FROM T02_DATA WHERE T02_T01_VARIABLE = " + obj.variableId + " ORDER BY T02_TIMESTAMP";
-			console.log('sql2: ' + sql2);
+			//console.log('sql2: ' + sql2);
 			con.query(sql2, function (err, result) {
 			  if (err) throw err;
-			  console.log("Success: " + result.affectedRows + " record(s) inserted");
+			  console.log("Success: " + result.length + " record(s) selected");
 			  var ret = [];
 			  for(i=0;i<result.length;i++) {
 				  ret.push({t: result[i].t,d: result[i].d});
