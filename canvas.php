@@ -9,8 +9,7 @@
     <script src="./script/jquery-3.3.1.js"></script>
 	<script src="./script/vue.js"></script>
 	<script src="./script/bootstrap.js"></script>
-	<script src="./script/dygraph.js"></script>
-	<link rel="stylesheet" href="./css/dygraph.css" />
+
 	
     <script>
     var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
@@ -32,11 +31,6 @@
             updateGraph();
 			//showMsg("Gr&aacute;fico atualizado");               
         });
-        g = new Dygraph(
-            // containing div
-            document.getElementById("graphdiv"), []
-			, { labels:["Timestamp","Light"], drawPoints:true, pointSize:3, xRangePad:10, includeZero:true }
-        );
             
 		// Preenche myHostname com mesmo host recebido nesta requisição
 		//console.log("URL: " + document.URL);
@@ -45,7 +39,12 @@
 		//console.log("hostname: " + parser.hostname);
 		var myHostname = parser.hostname;
 
-		function updateGraph() {
+		function updateCanvas() {
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			var img = document.getElementById("myPlant");
+			ctx.drawImage(img, 0, 0, c.width, c.height);
+
 			if(selectedKey<0)
 				return;
             // Use AJAX to get points
@@ -79,8 +78,8 @@
 				showMsg("Exception thrown while updating graph via POST");
 			});
 		}			
-		updateGraph();
-        window.intervalId = setInterval(updateGraph, 10000);
+		updateCanvas();
+        window.intervalId = setInterval(updateCanvas, 10000);
     });
     function showMsg(msg) {
     	$("#rowMsg").html(
@@ -101,11 +100,12 @@
 	</style>
 </head>
 <body>
+	<img id="myPlant" src="plants/Apartamento.png" width=600 height=400 style="display:none;"></img>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12 jumbotron">
 				<p>
-				<h1>IOT Sensor Data Visualization</h1>
+				<h1>Home Automation Dashboard</h1>
         		<div id="app" class="vue-js">
             		<p>{{ message }}</p>
         		</div>
@@ -140,10 +140,8 @@
                 </ul>
                 <p></p>
         	</div>
-			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:25px;">
-				<p></p>
-				<p></p>
-    		    <div id="graphdiv" style="width:100%; "></div>
+			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:10px;">
+    		    <canvas id="myCanvas" width="600" height="400" style="width:100%;height:100%;"></canvas>
 			</div>
 			<div class="col-sm-1">
 			</div>
