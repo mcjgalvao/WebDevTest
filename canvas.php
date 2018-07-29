@@ -15,7 +15,7 @@
     var host = "127.0.0.1";//"localhost"; //"192.168.0.52"; 
     var vm;
     var g;
-    var selectedKey = 1;
+    var selectedPlant = 1;
     $(document).ready(function(){
     	new Vue({
   		  el: '#app',
@@ -28,7 +28,7 @@
             selectedKey = $(this).attr("id");
             $(".graph-link").removeClass("active");
             $(this).addClass("active");
-            updateGraph();
+            updateCanvas();
 			//showMsg("Gr&aacute;fico atualizado");               
         });
             
@@ -48,9 +48,9 @@
 			if(selectedKey<0)
 				return;
             // Use AJAX to get points
-            var myObj = { "key": selectedKey };
+            var myObj = { "plantId": selectedPlant };
             var myJSON = JSON.stringify(myObj);
-            var updateURL = "http://" + myHostname + ":8080/getData";
+            var updateURL = "http://" + myHostname + ":8080/getThings";
 			console.log("updateURL: " + updateURL);
 			$.post(updateURL, myJSON, function(data,status) {
 				console.log("status: " + status);
@@ -100,7 +100,7 @@
 	</style>
 </head>
 <body>
-	<img id="myPlant" src="plants/Apartamento.png" width=600 height=400 style="display:none;"></img>
+	<img id="myPlant" src="plants/Apartamento.png" width=1200 height=800 style="display:none;"></img>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12 jumbotron">
@@ -127,15 +127,17 @@
                     }
                     
                     $res = $mysqli->query(
-                        "SELECT T01_NAME AS n, T01_KEY AS k FROM T01_VARIABLES"
+                        "SELECT T05_NAME AS n, T05_ID AS id, T04_FORM AS form, T04_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T03_PLANT = 1 AND T05_T04_TYPE = T04_ID"
                         );
                     $res->data_seek(0);
                     while ($row = $res->fetch_assoc()) {
-                        if($row['k']==1)
-                            echo("<a id=\"".$row['k']."\" class=\"list-group-item list-group-item-action graph-link active\">".$row['n']."</a>");
+                        if($row['id']==1)
+                            echo("<a id=\"".$row['id']."\" class=\"list-group-item list-group-item-action graph-link active\">".$row['n']."</a>");
                         else
-                            echo("<a id=\"".$row['k']."\" class=\"list-group-item list-group-item-action graph-link\">".$row['n']."</a>");
+                            echo("<a id=\"".$row['id']."\" class=\"list-group-item list-group-item-action graph-link\">".$row['n']."</a>");
                     }
+                    
+                    
                 ?>
                 </ul>
                 <p></p>
