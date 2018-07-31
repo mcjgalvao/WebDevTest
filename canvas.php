@@ -2,7 +2,7 @@
 <!-- HTML5 -->
 <html lang="en">
 <head>
-	<title>IOT Viewer</title>
+	<title>Home Automation</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/bootstrap.css">	
@@ -45,7 +45,7 @@
 			var img = document.getElementById("myPlant");
 			ctx.drawImage(img, 0, 0, c.width, c.height);
 
-			if(selectedKey<0)
+			if(selectedPlant<0)
 				return;
             // Use AJAX to get points
             var myObj = { "plantId": selectedPlant };
@@ -56,20 +56,41 @@
 				console.log("status: " + status);
 				if(status=="success") {
     				// parse JSON return
+    				console.log("data: " + data);
     				var retObj = JSON.parse(data);
-    				//console.log("retObj: " + retObj);
-    		        var graphData = [];
+    				console.log("retObj: " + retObj);
+    		        var thingData = [];
         			for(i=0;i<retObj.length;i++) {
-            			var dataPoint = retObj[i];
+            			var thing = retObj[i];
+        				console.log("thing: " + thing);
         				//console.log("dataPoint[" + i + "] : " + dataPoint.t + "," + dataPoint.d);
-        				graphData.push([new Date(dataPoint.t),dataPoint.d]);
+        				thingData.push(thing);
+
+        				// Set COLOR
+        				console.log("thing.state: " + thing.state);
+						if(thing.state==0) { //OFF
+	        				console.log("color: #00FF00");
+							ctx.strokeStyle="#00FF00";
+						}
+						else { //ON
+	        				console.log("color: #FF0000");
+							ctx.strokeStyle="#FF0000";
+						}
+						if(thing.form=='SQUARE') { //square
+							ctx.beginPath();
+        					ctx.moveTo(thing.x-thing.size/2,thing.y-thing.size/2);
+            				ctx.lineTo(thing.x+thing.size/2,thing.y-thing.size/2);
+            				ctx.lineTo(thing.x+thing.size/2,thing.y+thing.size/2);
+            				ctx.lineTo(thing.x-thing.size/2,thing.y+thing.size/2);
+            				ctx.lineTo(thing.x-thing.size/2,thing.y-thing.size/2);
+            				ctx.stroke();
+            			}
+        				else if(thing.form=='CIRCLE') { //circle
+							ctx.beginPath();
+							ctx.arc(thing.x,thing.y, thing.size,0, 2*Math.PI);
+							ctx.stroke();
+            			}
         			}
-    	            g.updateOptions(
-    	    	       { 
-    		    	    'file': graphData 
-    //		    	    ,dateWindow: [Date.now() - 30 * 1000, Date.now() 
-    			       }
-    				);
 				}
 				else {
 					showMsg("Error updating graph via POST");

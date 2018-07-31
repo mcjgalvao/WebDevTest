@@ -73,32 +73,21 @@ function getData(obj, callback) {
 }
 
 function getThings(obj, callback) {
-	  // Recupera ID da variavel a partir do Key
-	  var sql1 = "SELECT T01_ID AS id FROM T01_VARIABLES WHERE T01_KEY = " + obj.plantId;
+	  // Recupera ID da variavel a partir do plantId
+	  var sql1 = "SELECT T05_NAME AS name, T05_ID AS id, T04_FORM AS form, T04_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T04_TYPE = T04_ID AND T05_T03_PLANT = " + obj.plantId;
 	  //console.log('sql1: ' + sql1);
 	  con.query(sql1, function (err, result, fields) {
 	    if (err) throw err;
-	    if(result.length==1) {
-	    	obj.variableId = result[0].id;
-	    	//console.log("ID "+ obj.variableId + " retreived from KEY " + result[0].id);
-
-		    var sql2 = "SELECT DATE_FORMAT(T02_TIMESTAMP,'%Y-%m-%d %H:%i:%S') AS t, T02_DATA AS d FROM T02_DATA WHERE T02_T01_VARIABLE = " + obj.variableId + " ORDER BY T02_TIMESTAMP";
-			//console.log('sql2: ' + sql2);
-			con.query(sql2, function (err, result) {
-			  if (err) throw err;
-			  console.log("Success: " + result.length + " record(s) selected");
-			  var ret = [];
-			  for(i=0;i<result.length;i++) {
-				  ret.push({t: result[i].t,d: result[i].d});
-			  }
-			  callback(ret);
-			});
-
+	    if(result.length>=1) {
+			console.log("Success: " + result.length + " record(s) selected");
+			var ret = [];
+			for(i=0;i<result.length;i++) {
+				  ret.push({name: result[i].name,id: result[i].id, form: result[i].form, size: result[i].size, x: result[i].x, y: result[i].y, state: result[i].state});
+			}
+			callback(ret);
 	    }	
 	    else if(result.length==0)
-	    	console.log("KEY " + obj.key + " not found");
-	    else
-	    	console.log("Multiple Keys found " + result.length);
+	    	console.log("Plant " + obj.plantId + " not found");
 	  });
 		
 }
