@@ -31,7 +31,42 @@
             updateCanvas();
 			//showMsg("Gr&aacute;fico atualizado");               
         });
+
+
+        function isIntersectCircle(point, circle) {
+        	return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.size;
+        }
+
+        function isIntersectRect(point, rect) {
+        	return (point.x>=(rect.x-rect.size/2)) && (point.x<=(rect.x+rect.size/2))
+                	&& (point.y>=(rect.y-rect.size/2)) &&(point.y<=(rect.y+rect.size/2));
+        }
+        
+        var thingData = [];
+        $('#myCanvas').click(function(e) {
+            console.log("Click!");
+            const pos = {
+            	x: e.offsetX,
+            	y: e.offsetY
+            };
+            //console.log("Pos [" + pos.x + "," + pos.y + "]");
+            thingData.forEach(thing => {
+				if(thing.form=='SQUARE') {
+	                //console.log("Testing Square " + thing.name);
+					if(isIntersectRect(pos,thing)) {
+		                console.log("Clicked " + thing.name);
+					}
+				}
+				else if(thing.form=='CIRCLE') {
+	                //console.log("Testing Circle " + thing.name);
+					if(isIntersectCircle(pos,thing)) {
+		                console.log("Clicked " + thing.name);
+					}    
+				}
+            });
+
             
+        });
 		// Preenche myHostname com mesmo host recebido nesta requisição
 		//console.log("URL: " + document.URL);
 		var parser = document.createElement('a');
@@ -59,7 +94,7 @@
     				console.log("data: " + data);
     				var retObj = JSON.parse(data);
     				console.log("retObj: " + retObj);
-    		        var thingData = [];
+    		        thingData = [];
         			for(i=0;i<retObj.length;i++) {
             			var thing = retObj[i];
         				console.log("thing: " + thing);
@@ -163,7 +198,7 @@
                 </ul>
                 <p></p>
         	</div>
-			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:10px;">
+			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:0px;">
     		    <canvas id="myCanvas" width="600" height="400" style="width:100%;height:100%;"></canvas>
 			</div>
 			<div class="col-sm-1">
