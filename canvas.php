@@ -46,10 +46,10 @@
         $('#myCanvas').click(function(e) {
             console.log("Click!");
             const pos = {
-            	x: e.offsetX,
-            	y: e.offsetY
+            	x: e.offsetX/$(this).width(),
+            	y: e.offsetY/$(this).height()
             };
-            //console.log("Pos [" + pos.x + "," + pos.y + "]");
+            console.log("Pos [" + pos.x + "," + pos.y + "]");
             thingData.forEach(thing => {
 				if(thing.form=='SQUARE') {
 	                //console.log("Testing Square " + thing.name);
@@ -64,10 +64,33 @@
 					}    
 				}
             });
-
-            
         });
-		// Preenche myHostname com mesmo host recebido nesta requisição
+        $('#myCanvas').mousemove(function(e) {
+            //console.log("Click!");
+            const pos = {
+            	x: e.offsetX/$(this).width(),
+            	y: e.offsetY/$(this).height()
+            };
+            //console.log("Pos [" + pos.x + "," + pos.y + "]");
+            $(this).css('cursor','auto');
+            thingData.forEach(thing => {
+				if(thing.form=='SQUARE') {
+	                //console.log("Testing Square " + thing.name);
+					if(isIntersectRect(pos,thing)) {
+		                $(this).css('cursor','pointer');
+					}
+				}
+				else if(thing.form=='CIRCLE') {
+	                //console.log("Testing Circle " + thing.name);
+					if(isIntersectCircle(pos,thing)) {
+		                $(this).css('cursor','pointer');
+					}    
+				}
+            });
+        });
+
+
+        // Preenche myHostname com mesmo host recebido nesta requisição
 		//console.log("URL: " + document.URL);
 		var parser = document.createElement('a');
 		parser.href = document.URL;
@@ -122,7 +145,7 @@
             			}
         				else if(thing.form=='CIRCLE') { //circle
 							ctx.beginPath();
-							ctx.arc(thing.x,thing.y, thing.size,0, 2*Math.PI);
+							ctx.arc(thing.x * $('#myCanvas').width() ,thing.y * $('#myCanvas').height(), thing.size * $('#myCanvas').width(),0, 2*Math.PI);
 							ctx.stroke();
             			}
         			}
@@ -183,7 +206,7 @@
                     }
                     
                     $res = $mysqli->query(
-                        "SELECT T05_NAME AS n, T05_ID AS id, T04_FORM AS form, T04_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T03_PLANT = 1 AND T05_T04_TYPE = T04_ID"
+                        "SELECT T05_NAME AS n, T05_ID AS id, T04_FORM AS form, T05_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T03_PLANT = 1 AND T05_T04_TYPE = T04_ID"
                         );
                     $res->data_seek(0);
                     while ($row = $res->fetch_assoc()) {
@@ -199,7 +222,7 @@
                 <p></p>
         	</div>
 			<div class="col-sm-9" style="border-style:solid;border-width:1;padding:0px;">
-    		    <canvas id="myCanvas" width="600" height="400" style="width:100%;height:100%;"></canvas>
+    		    <canvas id="myCanvas" width="600" height="400" style="width:600;height:400;"></canvas> <!--  Era 100% nos dois ultimos -->
 			</div>
 			<div class="col-sm-1">
 			</div>

@@ -74,7 +74,7 @@ function getData(obj, callback) {
 
 function getThings(obj, callback) {
 	  // Recupera ID da variavel a partir do plantId
-	  var sql1 = "SELECT T05_NAME AS name, T05_ID AS id, T04_FORM AS form, T04_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T04_TYPE = T04_ID AND T05_T03_PLANT = " + obj.plantId;
+	  var sql1 = "SELECT T05_NAME AS name, T05_ID AS id, T04_FORM AS form, T05_SIZE AS size, T05_X AS x, T05_Y AS y, T05_STATE AS state FROM T05_THINGS, T04_THINGTYPES WHERE T05_T04_TYPE = T04_ID AND T05_T03_PLANT = " + obj.plantId;
 	  //console.log('sql1: ' + sql1);
 	  con.query(sql1, function (err, result, fields) {
 	    if (err) throw err;
